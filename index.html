@@ -1,1 +1,267 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#0f6466">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>Budg'iz</title>
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='100' fill='%23ffffff'/><g transform='translate(120, 50) scale(0.9)'><circle cx='150' cy='150' r='130' fill='%23ffffff' stroke='%231c3144' stroke-width='16'/><circle cx='150' cy='150' r='105' fill='none' stroke='%231c3144' stroke-width='8' stroke-dasharray='14 10'/><circle cx='110' cy='140' r='16' fill='%231c3144'/><path d='M 175 145 Q 190 130 205 145' fill='none' stroke='%231c3144' stroke-width='12' stroke-linecap='round'/><path d='M 125 185 Q 150 215 175 185' fill='none' stroke='%231c3144' stroke-width='14' stroke-linecap='round'/></g><text x='256' y='440' font-family='sans-serif' font-size='76' font-weight='bold' fill='%233a9296' text-anchor='middle'>Budg’iz</text></svg>">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
+    body { background-color: #16181d; font-family: 'Fredoka', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100dvh; padding: 12px; color: #1a1a1a; }
+    .device { background: linear-gradient(145deg, #178082, #0e5a5c); width: 100%; max-width: 420px; border-radius: 32px; padding: 18px 16px 22px; box-shadow: 0 18px 35px rgba(0,0,0,0.55), inset 0 3px 4px rgba(255,255,255,0.25), inset 0 -6px 10px rgba(0,0,0,0.45); border: 4px solid #093e40; display: flex; flex-direction: column; gap: 14px; }
+    .header { display: flex; justify-content: space-between; align-items: center; padding: 0 4px; }
+    .brand { display: flex; align-items: center; gap: 8px; }
+    .mascot { width: 34px; height: 34px; background: #0a4648; border-radius: 50%; border: 2px solid #062b2c; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+    .brand h1 { font-size: 28px; color: #111; }
+    .top-actions { display: flex; gap: 8px; }
+    .btn-mini { background: #e9e4d4; border: 2px solid #222; border-radius: 12px; padding: 6px 10px; font-family: 'Fredoka', sans-serif; font-size: 13px; font-weight: 700; color: #1a1a1a; box-shadow: 0 3px 0 #1a1a1a; cursor: pointer; }
+    .btn-mini:active { transform: translateY(3px); box-shadow: 0 0 0 #1a1a1a; }
+    .total-box { background: #f4c430; border: 3px solid #1a1a1a; border-radius: 18px; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; box-shadow: inset 0 2px 0 rgba(255,255,255,0.5), 0 4px 0 #093e40; }
+    .total-label { font-size: 15px; font-weight: 700; text-transform: uppercase; line-height: 1.1; }
+    .total-label span { display: block; font-size: 11px; opacity: 0.75; }
+    .lcd-screen { background: #f5efd6; border: 3px solid #1a1a1a; border-radius: 10px; padding: 4px 10px; font-family: 'Share Tech Mono', monospace; font-size: 26px; font-weight: bold; color: #111; box-shadow: inset 0 3px 5px rgba(0,0,0,0.25); min-width: 135px; text-align: right; }
+    .lcd-screen.negative { color: #c92a2a; }
+    .categories-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; background: #0a4547; padding: 10px; border-radius: 20px; border: 3px solid #073233; box-shadow: inset 0 4px 8px rgba(0,0,0,0.45); }
+    .cat-card { border-radius: 14px; border: 3px solid #1a1a1a; padding: 10px 8px; display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; box-shadow: 0 4px 0 #1a1a1a; }
+    .cat-card:active { transform: translateY(3px); box-shadow: 0 1px 0 #1a1a1a; }
+    .cat-essence { background: #e04f3e; }
+    .cat-courses { background: #f28c28; }
+    .cat-loisirs { background: #43a047; }
+    .cat-autres  { background: #7e57c2; }
+    .cat-title { font-size: 14px; font-weight: 700; text-transform: uppercase; color: #111; }
+    .cat-display { background: #f5efd6; border: 2.5px solid #1a1a1a; border-radius: 8px; width: 100%; padding: 5px 6px; text-align: center; font-family: 'Share Tech Mono', monospace; font-size: 22px; font-weight: bold; box-shadow: inset 0 2px 4px rgba(0,0,0,0.25); }
+    .cat-display.negative { color: #c92a2a; }
+    .cat-dot { width: 24px; height: 24px; border-radius: 50%; border: 2.5px solid #1a1a1a; box-shadow: 0 3px 0 #1a1a1a, inset 0 2px 3px rgba(255,255,255,0.45); }
+    .cat-essence .cat-dot { background: #c62828; }
+    .cat-courses .cat-dot { background: #ef6c00; }
+    .cat-loisirs .cat-dot { background: #2e7d32; }
+    .cat-autres  .cat-dot { background: #5e35b1; }
+    .savings-bar { background: linear-gradient(90deg, #e04f3e 0%, #f28c28 35%, #43a047 70%, #7e57c2 100%); border: 3px solid #1a1a1a; border-radius: 16px; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; box-shadow: 0 4px 0 #1a1a1a; }
+    .savings-bar:active { transform: translateY(3px); box-shadow: 0 1px 0 #1a1a1a; }
+    .savings-title { font-size: 18px; font-weight: 700; color: #111; background: rgba(255,255,255,0.78); padding: 4px 10px; border-radius: 8px; border: 2px solid #1a1a1a; }
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); display: none; justify-content: center; align-items: center; padding: 16px; z-index: 100; }
+    .modal-overlay.active { display: flex; }
+    .keypad-box { background: #147476; border: 4px solid #1a1a1a; border-radius: 26px; width: 100%; max-width: 360px; padding: 16px; box-shadow: 0 15px 30px rgba(0,0,0,0.6); display: flex; flex-direction: column; gap: 12px; }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; }
+    .modal-badge { padding: 5px 12px; border-radius: 10px; border: 2.5px solid #1a1a1a; font-size: 16px; font-weight: 700; text-transform: uppercase; color: #111; }
+    .close-btn { background: #e9e4d4; border: 2.5px solid #1a1a1a; border-radius: 50%; width: 34px; height: 34px; font-weight: 700; font-size: 16px; cursor: pointer; }
+    .input-screen { background: #f5efd6; border: 3px solid #1a1a1a; border-radius: 12px; padding: 10px 14px; font-family: 'Share Tech Mono', monospace; font-size: 32px; text-align: right; box-shadow: inset 0 3px 6px rgba(0,0,0,0.3); }
+    .numpad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .key { background: #3d434d; color: #fff; border: 2.5px solid #111; border-radius: 12px; padding: 12px 0; font-family: 'Share Tech Mono', monospace; font-size: 22px; font-weight: bold; box-shadow: 0 4px 0 #111; cursor: pointer; }
+    .key:active { transform: translateY(3px); box-shadow: 0 1px 0 #111; }
+    .key-clear { background: #d9534f; }
+    .action-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 4px; }
+    .btn-action { border: 3px solid #1a1a1a; border-radius: 14px; padding: 12px 8px; font-family: 'Fredoka', sans-serif; font-size: 16px; font-weight: 700; color: #fff; box-shadow: 0 4px 0 #1a1a1a; cursor: pointer; }
+    .btn-action:active { transform: translateY(3px); box-shadow: 0 1px 0 #1a1a1a; }
+    .btn-expense { background: #d63031; }
+    .btn-income  { background: #27ae60; }
+    .btn-save    { background: #f4c430; color: #111; grid-column: span 2; }
+    .settings-list { display: flex; flex-direction: column; gap: 8px; }
+    .setting-item { display: flex; justify-content: space-between; align-items: center; background: #0d5254; padding: 8px 12px; border-radius: 12px; border: 2px solid #1a1a1a; color: #fff; }
+    .setting-item input { width: 100px; padding: 6px; border-radius: 8px; border: 2px solid #1a1a1a; background: #f5efd6; font-family: 'Share Tech Mono', monospace; font-size: 18px; text-align: right; }
+  </style>
+</head>
+<body>
+  <div class="device">
+    <div class="header">
+      <div class="brand">
+        <div class="mascot">😊</div>
+        <h1>Budg'iz</h1>
+      </div>
+      <div class="top-actions">
+        <button class="btn-mini" onclick="openSettings()">⚙️ Budgets</button>
+        <button class="btn-mini" onclick="resetBudgets()">🔄 RAZ</button>
+      </div>
+    </div>
+    <div class="total-box">
+      <div class="total-label">Budget Total<span>Reste courant</span></div>
+      <div class="lcd-screen" id="total-display">1 400 €</div>
+    </div>
+    <div class="categories-grid">
+      <div class="cat-card cat-essence" onclick="openKeypad('essence')">
+        <div class="cat-title">Essence</div>
+        <div class="cat-display" id="disp-essence">400</div>
+        <div class="cat-dot"></div>
+      </div>
+      <div class="cat-card cat-courses" onclick="openKeypad('courses')">
+        <div class="cat-title">Courses</div>
+        <div class="cat-display" id="disp-courses">500</div>
+        <div class="cat-dot"></div>
+      </div>
+      <div class="cat-card cat-loisirs" onclick="openKeypad('loisirs')">
+        <div class="cat-title">Loisirs</div>
+        <div class="cat-display" id="disp-loisirs">300</div>
+        <div class="cat-dot"></div>
+      </div>
+      <div class="cat-card cat-autres" onclick="openKeypad('autres')">
+        <div class="cat-title">Autres</div>
+        <div class="cat-display" id="disp-autres">200</div>
+        <div class="cat-dot"></div>
+      </div>
+    </div>
+    <div class="savings-bar" onclick="openKeypad('economies')">
+      <div class="savings-title">ÉCONOMIES</div>
+      <div class="lcd-screen" id="disp-economies">0 €</div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="keypad-modal">
+    <div class="keypad-box">
+      <div class="modal-header">
+        <div class="modal-badge" id="modal-cat-name">Essence</div>
+        <button class="close-btn" onclick="closeKeypad()">✕</button>
+      </div>
+      <div class="input-screen" id="calc-display">0</div>
+      <div class="numpad">
+        <button class="key" onclick="pressKey('1')">1</button>
+        <button class="key" onclick="pressKey('2')">2</button>
+        <button class="key" onclick="pressKey('3')">3</button>
+        <button class="key" onclick="pressKey('4')">4</button>
+        <button class="key" onclick="pressKey('5')">5</button>
+        <button class="key" onclick="pressKey('6')">6</button>
+        <button class="key" onclick="pressKey('7')">7</button>
+        <button class="key" onclick="pressKey('8')">8</button>
+        <button class="key" onclick="pressKey('9')">9</button>
+        <button class="key" onclick="pressKey('.')">.</button>
+        <button class="key" onclick="pressKey('0')">0</button>
+        <button class="key key-clear" onclick="clearKey()">C</button>
+      </div>
+      <div class="action-row">
+        <button class="btn-action btn-expense" onclick="applyTransaction(-1)">➖ Dépense</button>
+        <button class="btn-action btn-income" onclick="applyTransaction(1)">➕ Entrée</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="settings-modal">
+    <div class="keypad-box">
+      <div class="modal-header">
+        <div class="modal-badge" style="background:#f4c430;">Budgets de départ</div>
+        <button class="close-btn" onclick="closeSettings()">✕</button>
+      </div>
+      <div class="settings-list">
+        <div class="setting-item"><span>🔴 Essence</span><input type="number" id="init-essence" step="any"></div>
+        <div class="setting-item"><span>🟠 Courses</span><input type="number" id="init-courses" step="any"></div>
+        <div class="setting-item"><span>🟢 Loisirs</span><input type="number" id="init-loisirs" step="any"></div>
+        <div class="setting-item"><span>🟣 Autres</span><input type="number" id="init-autres" step="any"></div>
+        <div class="setting-item"><span>💰 Économies</span><input type="number" id="init-economies" step="any"></div>
+      </div>
+      <div class="action-row">
+        <button class="btn-action btn-save" onclick="saveInitialBudgets()">✔ Enregistrer et appliquer</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js').catch(() => {});
+    }
+
+    const defaultData = {
+      initial: { essence: 400, courses: 500, loisirs: 300, autres: 200, economies: 0 },
+      current: { essence: 400, courses: 500, loisirs: 300, autres: 200, economies: 0 }
+    };
+    const catMeta = {
+      essence: { label: 'Essence', color: '#e04f3e' },
+      courses: { label: 'Courses', color: '#f28c28' },
+      loisirs: { label: 'Loisirs', color: '#43a047' },
+      autres:  { label: 'Autres',  color: '#7e57c2' },
+      economies: { label: 'Économies', color: '#f4c430' }
+    };
+    let state = JSON.parse(localStorage.getItem('budgiz_state')) || JSON.parse(JSON.stringify(defaultData));
+    let activeCategory = null, currentInput = '';
+
+    function beep(freq = 520, duration = 40) {
+      try {
+        if (navigator.vibrate) navigator.vibrate(15);
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator(), gain = ctx.createGain();
+        osc.type = 'triangle'; osc.frequency.value = freq; gain.gain.value = 0.06;
+        osc.connect(gain); gain.connect(ctx.destination); osc.start();
+        setTimeout(() => { osc.stop(); ctx.close(); }, duration);
+      } catch (e) {}
+    }
+
+    function formatNumber(num) {
+      return Number.isInteger(num) ? num.toLocaleString('fr-FR') : num.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function updateUI() {
+      ['essence', 'courses', 'loisirs', 'autres'].forEach(cat => {
+        const el = document.getElementById('disp-' + cat), val = state.current[cat];
+        el.textContent = formatNumber(val); el.classList.toggle('negative', val < 0);
+      });
+      const ecoEl = document.getElementById('disp-economies');
+      ecoEl.textContent = formatNumber(state.current.economies) + ' €';
+      ecoEl.classList.toggle('negative', state.current.economies < 0);
+      const total = state.current.essence + state.current.courses + state.current.loisirs + state.current.autres;
+      const totalEl = document.getElementById('total-display');
+      totalEl.textContent = formatNumber(total) + ' €';
+      totalEl.classList.toggle('negative', total < 0);
+      localStorage.setItem('budgiz_state', JSON.stringify(state));
+    }
+
+    function openKeypad(cat) {
+      beep(600); activeCategory = cat; currentInput = '';
+      const badge = document.getElementById('modal-cat-name');
+      badge.textContent = catMeta[cat].label; badge.style.background = catMeta[cat].color;
+      document.getElementById('calc-display').textContent = '0';
+      document.getElementById('keypad-modal').classList.add('active');
+    }
+
+    function closeKeypad() { beep(400); document.getElementById('keypad-modal').classList.remove('active'); }
+
+    function pressKey(key) {
+      beep(700, 25);
+      if (key === '.' && currentInput.includes('.')) return;
+      if (currentInput === '0' && key !== '.') currentInput = '';
+      if (currentInput === '' && key === '.') currentInput = '0';
+      if (currentInput.includes('.') && currentInput.split('.')[1].length >= 2) return;
+      if (currentInput.length >= 8) return;
+      currentInput += key;
+      document.getElementById('calc-display').textContent = currentInput || '0';
+    }
+
+    function clearKey() { beep(350, 35); currentInput = ''; document.getElementById('calc-display').textContent = '0'; }
+
+    function applyTransaction(sign) {
+      const amount = parseFloat(currentInput);
+      if (!amount || amount <= 0) { closeKeypad(); return; }
+      beep(sign > 0 ? 850 : 300, 60);
+      state.current[activeCategory] = Math.round((state.current[activeCategory] + sign * amount) * 100) / 100;
+      updateUI(); closeKeypad();
+    }
+
+    function openSettings() {
+      beep(600);
+      ['essence', 'courses', 'loisirs', 'autres', 'economies'].forEach(cat => { document.getElementById('init-' + cat).value = state.initial[cat]; });
+      document.getElementById('settings-modal').classList.add('active');
+    }
+
+    function closeSettings() { beep(400); document.getElementById('settings-modal').classList.remove('active'); }
+
+    function saveInitialBudgets() {
+      beep(800, 60);
+      ['essence', 'courses', 'loisirs', 'autres', 'economies'].forEach(cat => {
+        const val = parseFloat(document.getElementById('init-' + cat).value) || 0;
+        state.initial[cat] = val; state.current[cat] = val;
+      });
+      updateUI(); closeSettings();
+    }
+
+    function resetBudgets() {
+      if (confirm('Remettre toutes les cases à leurs montants de départ ?')) {
+        beep(450, 80); state.current = { ...state.initial }; updateUI();
+      }
+    }
+
+    updateUI();
+  </script>
+</body>
+</html>
 
