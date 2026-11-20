@@ -1,1 +1,18 @@
+{
+  "name": "Budg'iz",
+  "short_name": "Budg'iz",
+  "description": "Gestion de budget simplifiée",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#16181d",
+  "theme_color": "#0f6466",
+  "icons": [
+    {
+      "src": "./IMG_20261120_151XXXX.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ]
+}
 
